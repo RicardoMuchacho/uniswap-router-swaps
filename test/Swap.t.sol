@@ -29,6 +29,24 @@ contract SwapTest is Test {
     function test_isDeployedCorrectly() public view {
         assert(app.V2Router02Address() == arbRouter2);
     }
+    function test_revertETHSwapIfNoETH() public {
+        uint256 amountIn = 1 ether;
+        uint256 deadline = block.timestamp + 10 minutes;
+        address[] memory path = new address[](2);
+        path[0] = WETH;
+        path[1] = USDT;
+
+        uint256 amountOutMin = app.getAmountOutHelper(amountIn, path);
+        uint256 amountOutMinWithSlippage = (amountOutMin * 95) / 100;
+
+        vm.startPrank(user);
+
+        vm.expectRevert("Must send ETH");
+        app.swapETHForTokens(amountOutMinWithSlippage, path, deadline);
+
+        vm.stopPrank();
+    }
+
     function test_swapETHForTokensCorrectly() public {
         uint256 amountIn = 1 ether;
         uint256 deadline = block.timestamp + 10 minutes;
