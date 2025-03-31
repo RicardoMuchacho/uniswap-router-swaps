@@ -29,6 +29,7 @@ contract SwapTest is Test {
     function test_isDeployedCorrectly() public view {
         assert(app.V2Router02Address() == arbRouter2);
     }
+
     function test_revertETHSwapIfNoETH() public {
         uint256 amountIn = 1 ether;
         uint256 deadline = block.timestamp + 10 minutes;
@@ -63,11 +64,7 @@ contract SwapTest is Test {
         uint256 userETHBefore = user.balance;
         uint256 userUSDTBefore = IERC20(USDT).balanceOf(user);
 
-        app.swapETHForTokens{value: amountIn}(
-            amountOutMinWithSlippage,
-            path,
-            deadline
-        );
+        app.swapETHForTokens{value: amountIn}(amountOutMinWithSlippage, path, deadline);
 
         uint256 userETHAfter = user.balance;
         uint256 userUSDTAfter = IERC20(USDT).balanceOf(user);
