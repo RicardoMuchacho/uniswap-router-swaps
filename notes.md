@@ -1,4 +1,4 @@
-## Bloque 8 - Staking App
+## Bloque 10 - Swap tokens
 ---
 ## Advice:
 
